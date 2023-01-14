@@ -143,10 +143,8 @@ saveBaseButton.addEventListener('click', () => {
 });
 
 startButton.addEventListener('click', () => {
-   // if (dictCount >= 10)
-    goToTest();
-   // else redFlick(startButton);
-    
+    if (dictCount >= 10) goToTest();
+    else redFlick(startButton);
 });
 
 
