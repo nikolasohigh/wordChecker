@@ -1,152 +1,304 @@
 
-const startStrusture = ` <div class="main__wrapper">
-<div class="inputs__wrapper">
-     <div class="word__wrapper">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-         <input type="text" class="wordValue">
-     </div>
-     <div class="translate__wrapper">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-         <input type="text" class="translateValue">
-     </div>
+const startStrusture = `
+<div class="title baseeditor__title">Edit your database</div>
+<div class="subtitle baseeditor__subtitle">
+    <div class="baseeditor__subtitle__text">Check your base of words:</div>
+    <button class="baseeditor__button" id="check">Check</button>
 </div>
-
+<div class="baseeditor__editor">
+    <input type="text" id="eng" placeholder="English" class="baseeditor__editor__input">
+    <input type="text" id="ru" placeholder="Russian" class="baseeditor__editor__input">
+    <button class="baseeditor__editor__button" id="add">Add word</button>
 </div>
-<button id="submit">Submit</button>
+<div class="baseeditor__start">
+    <div class="title baseeditor__start__title">Start</div>
+    <button class="baseeditor__start__button" id="start">Start testing</button>
+</div>
+<div class="baseeditor__extra">
+<div class="title extra__title">Extra zone</div>
+<button class="baseeditor__extra__button-clear" id="clear">Clear database</button>
+<div class="baseeditor__extra_search">
+    <input type="text" id="search" class="baseeditor__extra_search__input" placeholder="English">
+    <button class="baseeditor__extra__button-remove" id="remove">Remove</button>
+</div>
+<button class="baseeditor__extra__button-savebase" id="savebase">Save Databse</button>
+</div>
 <script src="src/js/main.js"></script>
 `;
 
-const testStrusture = `    <div class="main__wrapper">
-<div class="inputs__wrapper">
-     <div class="word__wrapper">
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-         <span class="checkedWord"></span>
-     </div>
-     <div class="translate__wrapper">
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout1">&#9744;</span> 
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout2">&#9744;</span>
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout3">&#9744;</span>
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout4">&#9744;</span>
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout5">&#9744;</span>
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout6">&#9744;</span>
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout7">&#9744;</span>
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout8">&#9744;</span>
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout9">&#9744;</span>
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout10">&#9744;</span>
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout11">&#9744;</span>
-     <input type="text" class="answer">
-     <span class="checkout" id="checkout12">&#9744;</span>
-     </div>
-</div>
+const testStrusture =`
+<header class="header">
+        <div class="title test__title">Testing</div>
+        <div class="test__score">Score: <span id="scoreCount">100</span></div>
+        
+    </header>
 
+    <div class="test__word" id="word">Example</div>
+
+    <div class="test__buttonblock">
+        <div class="title test__title">Choose the correct answer</div>
+        <button class="test__button" id="firstAnswer">Example</button>
+        <button class="test__button" id="secondAnswer">Example</button>
+        <button class="test__button" id="thirdAnswer">Example</button>
+        <div class="test__saveandexit">
+            <button class="test-save" id="save">Save</button>
+            <button class="test-save" id="exit">Exit</button>
+        </div>
+    </div>
 </div>
-<button id="getResult">Get Result</button>
 <script src="src/js/main.js"></script>
 `;
 
-goToStart();
+document.body.innerHTML = startStrusture;
+//variables
+let scoreCount = 0;
+    if (localStorage.getItem('score') !== null) {
+        scoreCount = +localStorage.getItem('score');
+    }
+let dictCount = 0;
+    if (localStorage.getItem('databaseLen') !== null) {
+        dictCount = +localStorage.getItem('databaseLen');
+    }
+let dict = {};
+    if (JSON.parse(localStorage.getItem('database')) !== null) {
+        dict = JSON.parse(localStorage.getItem('database'));
+    }
+//elements edit
+const checkButton = document.getElementById("check"),
+      engInput = document.getElementById("eng"),
+      ruInput = document.getElementById("ru"),
+      addButton = document.getElementById("add"),
+//start
+     startButton = document.getElementById("start"),
+//extra
+      clearButton = document.getElementById("clear"),
+      searchInput = document.getElementById("search"),
+      saveBaseButton = document.getElementById("savebase"),
+      removeButton = document.getElementById("remove");
 
-const words = [],
-      translates = []; 
-
-const wordInputs = document.querySelectorAll(".wordValue"),
-      translateInputs = document.querySelectorAll(".translateValue");
-
-const submitButton = document.getElementById("submit");
-
-submitButton.addEventListener('click', () => {
-    saveWords();
-    goToTest();
+checkButton.addEventListener('click', () => {
+    if (dictCount === 0) {
+        redFlick(checkButton);
+    } else {
+        greenFlick(checkButton);
+    }
 });
 
+addButton.addEventListener('click', () => {
 
+        let engValue = engInput.value;   
+        let ruValue = ruInput.value;
+        let array = [];
+        
+    if (ruValue !== '' && engValue !== '') {
 
+        engValue = engValue[0].toUpperCase() + engValue.slice(1);
+        ruValue = ruValue[0].toUpperCase() + ruValue.slice(1);
+
+        array.push(engValue);
+        array.push(ruValue);
+
+        dict[dictCount] = [...array];
+
+        engInput.value = '';
+        ruInput.value = '';
+
+        greenFlick(addButton);
+        dictCount++;
+    } else {
+        redFlick(addButton);
+    }
+    
+});
+
+clearButton.addEventListener('click', () => {
+    dict = {};
+    dictCount = 0;
+    greenFlick(clearButton);
+});
+
+removeButton.addEventListener('click', () => {
+    let editedValue =  searchInput.value.toString()[0].toUpperCase() + searchInput.value.slice(1);
+    let deleteStatus = false;
+    for (let key in dict) {
+        if (dict[key][0] == editedValue) {
+            deleteStatus = true;
+            dict[key] = [...dict[dictCount-1]];
+            dictCount--;
+            delete dict[dictCount];
+            
+            greenFlick(removeButton);
+        }
+    }
+    if (!deleteStatus) {
+        redFlick(removeButton);
+    }
+});
+
+saveBaseButton.addEventListener('click', () => {
+    localStorage.setItem('database', JSON.stringify(dict));
+    localStorage.setItem('databaseLen', dictCount.toString());
+    localStorage.setItem('score', scoreCount.toString());
+    greenFlick(saveBaseButton);
+});
+
+startButton.addEventListener('click', () => {
+   // if (dictCount >= 10)
+    goToTest();
+   // else redFlick(startButton);
+    
+});
 
 
 function goToTest() {
     document.body.innerHTML = testStrusture;
+    //elements
+const scoreSpan = document.getElementById('scoreCount'),
+      testingWord = document.getElementById('word'),
+      firstAnswer = document.getElementById('firstAnswer'),
+      secondAnswer = document.getElementById('secondAnswer'),
+      thirdAnswer = document.getElementById('thirdAnswer'),
+      exitButton = document.getElementById('exit'),
+      saveButton = document.getElementById('save');
 
-    const randomWords = [...words];
-    const trueWords = [];
-    randomWords.sort();
+      let indexOfCorrectButton = getRandomNumber(3);
+      let indexOfcorrectTest = getRandomNumber(dictCount);
 
-    const resultButton = document.getElementById('getResult');
-    const answers = document.querySelectorAll('.answer');
-    const checkedWords = document.querySelectorAll('.checkedWord');
-   
 
-    checkedWords.forEach((item, i) => {
-        item.textContent = randomWords[i];
-        trueWords[i] = randomWords[i];
+      firstAnswer.addEventListener('click', () => {
+        const indexOfButton = 0;
+    
+        if (indexOfButton === indexOfCorrectButton) {
+            showColors();
+            setTimeout(() => {
+                getNewTest();
+            }, 1000);
+            scoreCount+=10;
+            
+        } else {
+            showColors();
+            setTimeout(() => {
+                getNewTest();
+            }, 1000);
+            scoreCount-=5;
+            
+            
+        }
     });
     
-
-    resultButton.addEventListener('click', () => {
-        answers.forEach((item, i) => {
-            if (translates.indexOf(item.value) === words.indexOf(trueWords[i])) {
-                document.getElementById(`checkout${i+1}`).style.color = 'green';
-                document.getElementById(`checkout${i+1}`).innerHTML = '&#9745;';
-            } else {
-                document.getElementById(`checkout${i+1}`).style.color = 'red';
-                document.getElementById(`checkout${i+1}`).innerHTML = '&#9746;';
-            }
-        });
+    secondAnswer.addEventListener('click', () => {
+        const indexOfButton = 1;
+    
+        if (indexOfButton === indexOfCorrectButton) {
+            showColors();
+            setTimeout(() => {
+                getNewTest();
+            }, 1000);
+            scoreCount+=10;
+            
+        } else {
+            showColors();
+            setTimeout(() => {
+                getNewTest();
+            }, 1000);
+            scoreCount-=5;
+            
+        }
+    });
+    
+    thirdAnswer.addEventListener('click', () => {
+        const indexOfButton = 2;
+    
+        if (indexOfButton === indexOfCorrectButton) {
+            showColors();
+            setTimeout(() => {
+                getNewTest();
+            }, 1000);
+            scoreCount+=10;
+            
+        } else {
+            showColors();
+            setTimeout(() => {
+                getNewTest();
+            }, 1000);
+            scoreCount-=5;
+            
+        }
+    });
+    
+    exitButton.addEventListener('click', ()=> {
+        greenFlick(exitButton);
+        document.body.innerHTML = startStrusture;
+    });
+    
+    saveButton.addEventListener('click', ()=> {
+        greenFlick(saveButton);
+        localStorage.setItem('score', scoreCount.toString());
     });
 
+    getNewTest();
+
+    function getNewTest() {
+        indexOfCorrectButton = getRandomNumber(3);
+        indexOfcorrectTest = getRandomNumber(dictCount);
+
+        testingWord.innerHTML = dict[indexOfcorrectTest][0];
+        scoreSpan.textContent = scoreCount.toString();
+        getAnswers();
+    }
+
+    function showColors() {
+        if (indexOfCorrectButton === 0) {
+            greenFlick(firstAnswer);
+            redFlick(secondAnswer);
+            redFlick(thirdAnswer);
+        } else if(indexOfCorrectButton === 1) {
+            greenFlick(secondAnswer);
+            redFlick(firstAnswer);
+            redFlick(thirdAnswer);
+        } else if(indexOfCorrectButton === 2) {
+            greenFlick(thirdAnswer);
+            redFlick(firstAnswer);
+            redFlick(secondAnswer);
+        }
+    }
+
+    function getAnswers() {
+        if (indexOfCorrectButton === 0) {
+            firstAnswer.textContent = dict[indexOfcorrectTest][1];
+
+            secondAnswer.textContent = dict[getRandomNumber(dictCount)][1];
+            thirdAnswer.textContent = dict[getRandomNumber(dictCount)][1];
+        } else if(indexOfCorrectButton === 1) {
+            secondAnswer.textContent = dict[indexOfcorrectTest][1];
+
+            firstAnswer.textContent = dict[getRandomNumber(dictCount)][1];
+            thirdAnswer.textContent = dict[getRandomNumber(dictCount)][1];
+        } else if(indexOfCorrectButton === 2) {
+            thirdAnswer.textContent = dict[indexOfcorrectTest][1];
+
+            firstAnswer.textContent = dict[getRandomNumber(dictCount)][1];
+            secondAnswer.textContent = dict[getRandomNumber(dictCount)][1];
+        }
+    }
 }
 
-function saveWords() {
-    wordInputs.forEach(item => {
-        words.push(item.value);
-    });
 
-    translateInputs.forEach(item => {
-        translates.push(item.value);
-    });
-}
 
-function goToStart() {
-    document.body.innerHTML = startStrusture;
-}
+ function greenFlick (element) {
+    element.style.borderColor = 'green';
+    setTimeout(() => {
+        element.style.borderColor = 'azure';
+    }, 1000);
+ }
 
+ function redFlick (element) {
+    element.style.borderColor = 'red';
+    setTimeout(() => {
+        element.style.borderColor = 'azure';
+    }, 1000);
+ }
+
+ function getRandomNumber(max) {
+    return Math.floor(Math.random() * max);
+  }
