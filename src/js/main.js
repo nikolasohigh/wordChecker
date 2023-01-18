@@ -21,7 +21,6 @@ const startStrusture = `
     <input type="text" id="search" class="baseeditor__extra_search__input" placeholder="English">
     <button class="baseeditor__extra__button-remove" id="remove">Remove</button>
 </div>
-<button class="baseeditor__extra__button-savebase" id="savebase">Save Databse</button>
 </div>
 <script src="src/js/main.js"></script>
 `;
@@ -41,7 +40,6 @@ const testStrusture =`
         <button class="test__button" id="secondAnswer">Example</button>
         <button class="test__button" id="thirdAnswer">Example</button>
         <div class="test__saveandexit">
-            <button class="test-save" id="save">Save</button>
             <button class="test-save" id="exit">Exit</button>
         </div>
     </div>
@@ -73,7 +71,6 @@ const checkButton = document.getElementById("check"),
 //extra
       clearButton = document.getElementById("clear"),
       searchInput = document.getElementById("search"),
-      saveBaseButton = document.getElementById("savebase"),
       removeButton = document.getElementById("remove");
 
 checkButton.addEventListener('click', () => {
@@ -108,26 +105,29 @@ addButton.addEventListener('click', () => {
     } else {
         redFlick(addButton);
     }
-    
+    saveAll();
 });
 
 clearButton.addEventListener('click', () => {
     dict = {};
     dictCount = 0;
     greenFlick(clearButton);
+    saveAll();
 });
 
 removeButton.addEventListener('click', () => {
-    let editedValue =  searchInput.value.toString()[0].toUpperCase() + searchInput.value.slice(1);
+
+    let editedValue =  searchInput.value.toString();
     let deleteStatus = false;
+    let keyOfLastProperty = dictCount-1;
     for (let key in dict) {
-        if (dict[key][0] == editedValue) {
-            deleteStatus = true;
-            dict[key] = [...dict[dictCount-1]];
+        if (dict[key][0].toLowerCase() === editedValue.toLowerCase()) {
+            dict[key] = [...dict[keyOfLastProperty]];
+            delete dict.keyOfLastProperty;
             dictCount--;
-            delete dict[dictCount];
-            
+            deleteStatus = true;
             greenFlick(removeButton);
+            saveAll();
         }
     }
     if (!deleteStatus) {
@@ -135,16 +135,13 @@ removeButton.addEventListener('click', () => {
     }
 });
 
-saveBaseButton.addEventListener('click', () => {
-    localStorage.setItem('database', JSON.stringify(dict));
-    localStorage.setItem('databaseLen', dictCount.toString());
-    localStorage.setItem('score', scoreCount.toString());
-    greenFlick(saveBaseButton);
-});
 
 startButton.addEventListener('click', () => {
-    if (dictCount >= 10) goToTest();
-    else redFlick(startButton);
+    if (dictCount >= 10) {
+        goToTest();
+    } else {
+        redFlick(startButton);
+    }
 });
 
 
@@ -156,8 +153,7 @@ const scoreSpan = document.getElementById('scoreCount'),
       firstAnswer = document.getElementById('firstAnswer'),
       secondAnswer = document.getElementById('secondAnswer'),
       thirdAnswer = document.getElementById('thirdAnswer'),
-      exitButton = document.getElementById('exit'),
-      saveButton = document.getElementById('save');
+      exitButton = document.getElementById('exit');
 
       let indexOfCorrectButton = getRandomNumber(3);
       let indexOfcorrectTest = getRandomNumber(dictCount);
@@ -225,14 +221,11 @@ const scoreSpan = document.getElementById('scoreCount'),
     });
     
     exitButton.addEventListener('click', ()=> {
+        saveAll();
         greenFlick(exitButton);
         document.body.innerHTML = startStrusture;
     });
     
-    saveButton.addEventListener('click', ()=> {
-        greenFlick(saveButton);
-        localStorage.setItem('score', scoreCount.toString());
-    });
 
     getNewTest();
 
@@ -262,41 +255,59 @@ const scoreSpan = document.getElementById('scoreCount'),
     }
 
     function getAnswers() {
+
+        const uniqueRandNumbers = generateUniqueNumbers(0, dictCount, indexOfcorrectTest);
+
         if (indexOfCorrectButton === 0) {
             firstAnswer.textContent = dict[indexOfcorrectTest][1];
 
-            secondAnswer.textContent = dict[getRandomNumber(dictCount)][1];
-            thirdAnswer.textContent = dict[getRandomNumber(dictCount)][1];
+            secondAnswer.textContent = dict[uniqueRandNumbers[0]][1];
+            thirdAnswer.textContent = dict[uniqueRandNumbers[1]][1];
         } else if(indexOfCorrectButton === 1) {
             secondAnswer.textContent = dict[indexOfcorrectTest][1];
 
-            firstAnswer.textContent = dict[getRandomNumber(dictCount)][1];
-            thirdAnswer.textContent = dict[getRandomNumber(dictCount)][1];
+            firstAnswer.textContent = dict[uniqueRandNumbers[0]][1];
+            thirdAnswer.textContent = dict[uniqueRandNumbers[1]][1];
         } else if(indexOfCorrectButton === 2) {
             thirdAnswer.textContent = dict[indexOfcorrectTest][1];
 
-            firstAnswer.textContent = dict[getRandomNumber(dictCount)][1];
-            secondAnswer.textContent = dict[getRandomNumber(dictCount)][1];
+            firstAnswer.textContent = dict[uniqueRandNumbers[0]][1];
+            secondAnswer.textContent = dict[uniqueRandNumbers[1]][1];
         }
     }
 }
 
+function generateUniqueNumbers(min, max, index) {
+    let uniqueNumbers = [];
+    while (uniqueNumbers.length < 2) {
+        let randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
+        if (!uniqueNumbers.includes(randomNumber) && randomNumber != index) {
+            uniqueNumbers.push(randomNumber);
+        }
+    }
+    return uniqueNumbers;
+}
 
-
- function greenFlick (element) {
+function greenFlick (element) {
     element.style.borderColor = 'green';
     setTimeout(() => {
         element.style.borderColor = 'azure';
     }, 1000);
- }
+}
 
- function redFlick (element) {
+function redFlick (element) {
     element.style.borderColor = 'red';
     setTimeout(() => {
         element.style.borderColor = 'azure';
     }, 1000);
- }
+}
 
  function getRandomNumber(max) {
     return Math.floor(Math.random() * max);
-  }
+}
+
+function saveAll() {
+    localStorage.setItem('database', JSON.stringify(dict));
+    localStorage.setItem('databaseLen', dictCount.toString());
+    localStorage.setItem('score', scoreCount.toString());
+}
