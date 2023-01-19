@@ -1,26 +1,26 @@
 
 const startStrusture = `
-<div class="title baseeditor__title">Edit your database</div>
-<div class="subtitle baseeditor__subtitle">
-    <div class="baseeditor__subtitle__text">Check your base of words:</div>
-    <button class="baseeditor__button" id="check">Check</button>
-</div>
+<h1>Word Checker</h1>
+<div class="title baseeditor__title">Edit your vocabulary</div>
 <div class="baseeditor__editor">
     <input type="text" id="eng" placeholder="English" class="baseeditor__editor__input">
     <input type="text" id="ru" placeholder="Russian" class="baseeditor__editor__input">
     <button class="baseeditor__editor__button" id="add">Add word</button>
 </div>
+<div class="baseeditor__extra"> 
+    <div class="baseeditor__extra_search">
+        <input type="text" id="search" class="baseeditor__extra_search__input" placeholder="English">
+        <button class="baseeditor__extra__button-remove" id="remove">Remove</button>
+    </div>
+    <button class="baseeditor__extra__button-clear" id="clear">Clear database</button>
+    </div>
+<div class="subtitle baseeditor__check">
+    <div class="baseeditor__check__text">Check your vocabulary:</div>
+    <button class="baseeditor__button" id="check">Check</button>
+</div>
 <div class="baseeditor__start">
-    <div class="title baseeditor__start__title">Start</div>
-    <button class="baseeditor__start__button" id="start">Start testing</button>
-</div>
-<div class="baseeditor__extra">
-<div class="title extra__title">Extra zone</div>
-<button class="baseeditor__extra__button-clear" id="clear">Clear database</button>
-<div class="baseeditor__extra_search">
-    <input type="text" id="search" class="baseeditor__extra_search__input" placeholder="English">
-    <button class="baseeditor__extra__button-remove" id="remove">Remove</button>
-</div>
+    <div class=" subtitle baseeditor__start__title">Start:</div>
+    <button class="baseeditor__start__button" id="start">Start</button>
 </div>
 <script src="src/js/main.js"></script>
 `;
