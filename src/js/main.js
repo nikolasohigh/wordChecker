@@ -27,24 +27,20 @@ const startStrusture = `
 
 const testStrusture =`
 <header class="header">
-        <div class="title test__title">Testing</div>
-        <div class="test__score">Score: <span id="scoreCount">100</span></div>
-        
-    </header>
-
-    <div class="test__word" id="word">Example</div>
-
-    <div class="test__buttonblock">
-        <div class="title test__title">Choose the correct answer</div>
-        <button class="test__button" id="firstAnswer">Example</button>
-        <button class="test__button" id="secondAnswer">Example</button>
-        <button class="test__button" id="thirdAnswer">Example</button>
-        <div class="test__saveandexit">
-            <button class="test-save" id="exit">Exit</button>
-        </div>
-    </div>
+<div class="title test__title">Testing</div>
+<div class="header__menu">
+<div class="test__score">Score: <span id="scoreCount">Err</span></div>
+<button class="test-exit" id="exit">Exit</button>
 </div>
-<script src="src/js/main.js"></script>
+</header>
+<div class="test__word" id="word">Err</div>
+<div class="test__buttonblock">
+<div class="title test__title">Choose the correct answer</div>
+<button class="test__button" id="firstAnswer">Err</button>
+<button class="test__button" id="secondAnswer">Err</button>
+<button class="test__button" id="thirdAnswer">Err</button>
+</div>
+</div>
 `;
 
 document.body.innerHTML = startStrusture;
