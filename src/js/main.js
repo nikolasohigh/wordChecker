@@ -43,17 +43,38 @@ const testStrusture =`
 </div>
 `;
 
+const themes = {
+    black: {
+        borderColor: 'white',
+        textColor: 'white',
+        backgroundColor: 'black'
+    },
+    light: {
+        borderColor: 'black',
+        textColor: 'black',
+        backgroundColor: 'grey'
+    },
+    pickTheme: function (theme) {
+        document.body.style.backgroundColor = theme.backgroundColor;
+    },
+};
+
+themes.pickTheme(themes.black);
+
 document.body.innerHTML = startStrusture;
 //variables
 let scoreCount = 0;
+let dictCount = 0;
+let dict = {};
+
     if (localStorage.getItem('score') !== null) {
         scoreCount = +localStorage.getItem('score');
     }
-let dictCount = 0;
+
     if (localStorage.getItem('databaseLen') !== null) {
         dictCount = +localStorage.getItem('databaseLen');
     }
-let dict = {};
+
     if (JSON.parse(localStorage.getItem('database')) !== null) {
         dict = JSON.parse(localStorage.getItem('database'));
     }
@@ -155,7 +176,7 @@ const scoreSpan = document.getElementById('scoreCount'),
       let indexOfcorrectTest = getRandomNumber(dictCount);
 
 
-      firstAnswer.addEventListener('click', () => {
+    firstAnswer.addEventListener('click', () => {
         const indexOfButton = 0;
     
         if (indexOfButton === indexOfCorrectButton) {
@@ -222,7 +243,6 @@ const scoreSpan = document.getElementById('scoreCount'),
         document.body.innerHTML = startStrusture;
     });
     
-
     getNewTest();
 
     function getNewTest() {
